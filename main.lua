@@ -28,6 +28,8 @@ function love.load()
   timer = maxTime
 
   score = 0
+
+  zombieSpeed = 100
 end
 
 function love.update(dt)
@@ -128,8 +130,19 @@ function love.update(dt)
 
       if timer <= 0 then
         spawnZombie()
-        maxTime = 0.95 * maxTime
-        timer = maxTime
+
+        local mintime = 0.5
+
+        if maxTime > mintime then
+          maxTime = 0.95 * maxTime
+          timer = maxTime
+        else
+          maxTime = mintime
+          timer = maxTime
+          if zombieSpeed < 250 then
+            zombieSpeed = zombieSpeed + zombieSpeed * dt
+          end
+        end
       end
     end
   end
@@ -137,6 +150,7 @@ end
 
 function love.draw()
   love.graphics.draw(sprites.background, 0, 0)
+  love.graphics.printf(timer.. "|" .. maxTime .."|".. zombieSpeed, 0, love.graphics.getHeight() - 30, love.graphics.getWidth(), "center")
 
   if gameState == 1 then
     love.graphics.setFont(myFont)
@@ -192,7 +206,7 @@ function spawnZombie()
 
   zombie.x = 0
   zombie.y = 0
-  zombie.speed = 100
+  zombie.speed = zombieSpeed
   zombie.dead = false
 
   local side = math.random(1, 4)
@@ -236,5 +250,6 @@ function love.mousepressed(x, y, button)
     maxTime = 2
     timer = maxTime
     score = 0
+    zombieSpeed = 100
   end
 end
