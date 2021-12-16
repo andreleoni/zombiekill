@@ -24,6 +24,7 @@ function love.load()
   player.injuredSpeed = 270
 
   myFont = love.graphics.newFont(30)
+  mySecondaryFont = love.graphics.newFont(20)
 
   zombies = {}
   bullets = {}
@@ -35,6 +36,8 @@ function love.load()
   score = 0
 
   zombieSpeed = 100
+
+  maxScore = 0
 end
 
 function love.update(dt)
@@ -82,6 +85,10 @@ function love.update(dt)
             player.x = love.graphics.getWidth() / 2
             player.y = love.graphics.getHeight() / 2
             player.injured = false
+
+            if score > maxScore then
+              maxScore = score
+            end
           end
         end
       end
@@ -164,7 +171,11 @@ function love.draw()
     love.graphics.printf("Click anywhere to begin!", 0, 50, love.graphics.getWidth(), "center")
   end
 
+  love.graphics.setFont(myFont)
   love.graphics.printf("Score: " .. score, 0, love.graphics.getHeight() - 100, love.graphics.getWidth(), "center")
+
+  love.graphics.setFont(mySecondaryFont)
+  love.graphics.printf("Max Score: " .. maxScore, 0, love.graphics.getHeight() - 50, love.graphics.getWidth(), "center")
 
   if player.injured then
     love.graphics.setColor(1, 0, 0)
