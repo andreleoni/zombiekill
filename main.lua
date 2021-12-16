@@ -9,6 +9,11 @@ function love.load()
   sprites.bullet = love.graphics.newImage('sprites/bullet.png')
   sprites.player = love.graphics.newImage('sprites/player.png')
   sprites.zombie = love.graphics.newImage('sprites/zombie.png')
+  sprites.crosshairs = love.graphics.newImage('sprites/crosshairs.png')
+
+  love.mouse.setVisible(false)
+
+  success = love.window.setFullscreen(true)
 
   player = {}
   player.x = love.graphics.getWidth() / 2
@@ -149,8 +154,10 @@ function love.update(dt)
 end
 
 function love.draw()
-  love.graphics.draw(sprites.background, 0, 0)
-  love.graphics.printf(timer.. "|" .. maxTime .."|".. zombieSpeed, 0, love.graphics.getHeight() - 30, love.graphics.getWidth(), "center")
+  love.graphics.draw(sprites.background, 0, 0, nil, love.graphics.getWidth(), love.graphics.getHeight())
+
+  -- DEBUG ONLY
+  -- love.graphics.printf(timer.. "|" .. maxTime .."|".. zombieSpeed, 0, love.graphics.getHeight() - 30, love.graphics.getWidth(), "center")
 
   if gameState == 1 then
     love.graphics.setFont(myFont)
@@ -190,6 +197,8 @@ function love.draw()
       sprites.bullet:getWidth()/2,
       sprites.bullet:getHeight()/2)
   end
+
+  love.graphics.draw(sprites.crosshairs, love.mouse.getX() - 20, love.mouse.getY() - 20)
 end
 
 function playerMouseAngle()
